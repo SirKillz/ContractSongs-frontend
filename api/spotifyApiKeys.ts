@@ -1,5 +1,7 @@
 import { callAPI } from "./apiBase";
 
+import { CreateApiTokensPayload } from "@/types/apiKeys";
+
 async function getApiKeys() {
 
     const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api-keys`
@@ -23,6 +25,18 @@ async function requestApiKeysWithCode(code: string) {
             "Content-Type": "application/json"
         }
     }
-    return callAPI(url.toString(), fetchConfig)
+    return await callAPI(url.toString(), fetchConfig)
 }
-export { getApiKeys, requestApiKeysWithCode }
+
+async function createApiTokens(payload: CreateApiTokensPayload) {
+    const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api-keys`
+    const fetchConfig = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    }
+    return await callAPI(url, fetchConfig)
+}
+
+export { getApiKeys, requestApiKeysWithCode, createApiTokens }

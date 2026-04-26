@@ -1,8 +1,12 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-import { getApiKeys, requestApiKeysWithCode } from "@/api/spotifyApiKeys";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { getApiKeys, requestApiKeysWithCode, createApiTokens } from "@/api/spotifyApiKeys";
+
+import { CreateApiTokensPayload } from "@/types/apiKeys";
 
 type useApiKeyOptions = {
   enabled?: boolean
@@ -28,5 +32,17 @@ export function useRequestTokenWithCode({enabled, code}: useRequestTokenWithCode
     staleTime: 1000 * 60 * 5, // 5 minutes
     enabled: enabled
 
+  })
+}
+
+export function useCreateApiTokens() {
+  const router = useRouter();
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: CreateApiTokensPayload) => createApiTokens(payload),
+    onSuccess: async() => {
+      await queryClient.invalidateQueries({queryKey: ['api-keys']})
+      router.push("/sessions")
+    }
   })
 }

@@ -1,12 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useSearchParams } from "next/navigation";
 import { Box, Typography, Alert, Button } from "@mui/material";
 
 import FixedPage from "@/components/common/FixedPage";
 import Section from "@/components/common/Section";
 
-import { useApiKeys, useRequestTokenWithCode } from "@/hooks/apiKeyManagementHooks";
+import { useApiKeys, useCreateApiTokens, useRequestTokenWithCode } from "@/hooks/apiKeyManagementHooks";
 
 export default function Home() {
 
@@ -16,16 +18,26 @@ export default function Home() {
   // React Query API Hooks 
 
   const {
-    isPending: isApiKeysPending, 
     isError: isApiKeysError, 
-    data: apiKeysData
   } = useApiKeys({enabled: code === null});
 
   const {
-    isPending: isRequestApiKeysPending,
-    isError: isRequestApiKeysError,
     data: requestApiKeysData,
+    isSuccess: isRequestApiKeysSuccess
   } = useRequestTokenWithCode({enabled: code !== null, code: code ?? ""})
+
+  const createApiKeysMutation = useCreateApiTokens();
+  
+  useEffect(() => {
+    if (!isRequestApiKeysSuccess || !requestApiKeysData) return;
+    if (createApiKeysMutation.isPending || createApiKeysMutation.isSuccess) return;
+
+    createApiKeysMutation.mutate(requestApiKeysData);
+  }, [
+    isRequestApiKeysSuccess,
+    requestApiKeysData,
+    createApiKeysMutation,
+  ]);
 
   return (
     <FixedPage>
