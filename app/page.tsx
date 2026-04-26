@@ -7,12 +7,17 @@ import FixedPage from "@/components/common/FixedPage";
 export default function Home() {
   return (
     <FixedPage>
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center"
+        }}
+      >
         <Typography
           component="h1"
           variant="h1"
         >
-          test
+          Welcome to the Spotify Contract Song App!
         </Typography>
       </Box>
     </FixedPage>
