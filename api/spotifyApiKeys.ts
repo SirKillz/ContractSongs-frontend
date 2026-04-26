@@ -13,4 +13,16 @@ async function getApiKeys() {
     return await callAPI(url, fetchConfig)
 }
 
-export {getApiKeys}
+async function requestApiKeysWithCode(code: string) {
+    const url = new URL(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api-keys/proxy/spotify/get-tokens`);
+    url.search = new URLSearchParams({code: code}).toString();
+    
+    const fetchConfig = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+    return callAPI(url.toString(), fetchConfig)
+}
+export { getApiKeys, requestApiKeysWithCode }
