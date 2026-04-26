@@ -25,7 +25,8 @@ function HomeContent() {
   // React Query API Hooks 
 
   const {
-    isError: isApiKeysError, 
+    isError: isApiKeysError,
+    isSuccess: isApiKeySuccess,
   } = useApiKeys({enabled: code === null});
 
   const {
@@ -83,6 +84,32 @@ function HomeContent() {
               sx={{backgroundColor: "#1ed760", alignSelf: "center"}}
             >
               Spotify Sign In
+            </Button>
+          </Box>
+        </Section>
+      }
+      {
+        isApiKeySuccess && 
+        <Section>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "15px"
+            }}
+          >
+            <Alert 
+              severity="success"
+              sx={{display: "flex", justifyContent: "center"}}
+            >
+              You are already signed in to Spotify, proceed to Sessions
+            </Alert>
+            <Button 
+              href="/sessions"
+              variant="contained"
+              sx={{backgroundColor: "#1ed760", alignSelf: "center"}}
+            >
+              Sessions
             </Button>
           </Box>
         </Section>
