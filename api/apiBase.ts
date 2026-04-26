@@ -1,4 +1,4 @@
-async function callAPI(url: string, fetchConfig: RequestInit) {
+async function callAPI<T>(url: string, fetchConfig: RequestInit): Promise<T> {
     try {
         const response = await fetch(url, fetchConfig)
         if (!response.ok) {
@@ -6,7 +6,7 @@ async function callAPI(url: string, fetchConfig: RequestInit) {
             throw new Error(`${response.status} - ${errorData.detail}`)
         }
         const data = await response.json()
-        return data
+        return data as T
     } catch (err) {
 
         // If we intentionally threw an Error above (e.g., 404), preserve it

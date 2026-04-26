@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import { useSearchParams } from "next/navigation";
 import { Box, Typography, Alert, Button } from "@mui/material";
@@ -11,7 +11,14 @@ import Section from "@/components/common/Section";
 import { useApiKeys, useCreateApiTokens, useRequestTokenWithCode } from "@/hooks/apiKeyManagementHooks";
 
 export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
+  );
+}
 
+function HomeContent() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
@@ -26,17 +33,23 @@ export default function Home() {
     isSuccess: isRequestApiKeysSuccess
   } = useRequestTokenWithCode({enabled: code !== null, code: code ?? ""})
 
-  const createApiKeysMutation = useCreateApiTokens();
+  const {
+    mutate: createApiTokens,
+    isPending: isCreatingApiTokens,
+    isSuccess: isCreateApiTokensSuccess,
+  } = useCreateApiTokens();
   
   useEffect(() => {
     if (!isRequestApiKeysSuccess || !requestApiKeysData) return;
-    if (createApiKeysMutation.isPending || createApiKeysMutation.isSuccess) return;
+    if (isCreatingApiTokens || isCreateApiTokensSuccess) return;
 
-    createApiKeysMutation.mutate(requestApiKeysData);
+    createApiTokens(requestApiKeysData);
   }, [
     isRequestApiKeysSuccess,
     requestApiKeysData,
-    createApiKeysMutation,
+    isCreatingApiTokens,
+    isCreateApiTokensSuccess,
+    createApiTokens,
   ]);
 
   return (

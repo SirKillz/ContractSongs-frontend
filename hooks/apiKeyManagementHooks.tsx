@@ -27,10 +27,10 @@ type useRequestTokenWithCodeOptions = {
 }
 export function useRequestTokenWithCode({enabled, code}: useRequestTokenWithCodeOptions) {
   return useQuery({
-    queryKey: ["api-keys", "proxy", "get-tokens", "code"],
+    queryKey: ["api-keys", "proxy", "get-tokens", code],
     queryFn: () => requestApiKeysWithCode(code),
     staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled: enabled
+    enabled: enabled && code.length > 0
 
   })
 }
@@ -42,7 +42,7 @@ export function useCreateApiTokens() {
     mutationFn: (payload: CreateApiTokensPayload) => createApiTokens(payload),
     onSuccess: async() => {
       await queryClient.invalidateQueries({queryKey: ['api-keys']})
-      router.push("/sessions")
+      router.replace("/sessions")
     }
   })
 }
