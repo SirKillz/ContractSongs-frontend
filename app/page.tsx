@@ -8,7 +8,7 @@ import { Box, Typography, Alert, Button } from "@mui/material";
 import FixedPage from "@/components/common/FixedPage";
 import Section from "@/components/common/Section";
 
-import { useApiKeys, useCreateApiTokens, useRequestTokenWithCode } from "@/hooks/apiKeyManagementHooks";
+import { useGetApiKeys, useCreateApiTokens, useRequestTokenWithCode } from "@/hooks/apiKeyManagementHooks";
 
 export default function Home() {
   return (
@@ -27,7 +27,7 @@ function HomeContent() {
   const {
     isError: isApiKeysError,
     isSuccess: isApiKeySuccess,
-  } = useApiKeys({enabled: code === null});
+  } = useGetApiKeys({enabled: code === null});
 
   const {
     data: requestApiKeysData,

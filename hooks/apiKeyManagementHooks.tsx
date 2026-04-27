@@ -12,7 +12,7 @@ type useApiKeyOptions = {
   enabled?: boolean
 }
 
-export function useApiKeys({enabled}: useApiKeyOptions) {
+export function useGetApiKeys({enabled}: useApiKeyOptions) {
   return useQuery({
     queryKey: ["api-keys"],
     queryFn: getApiKeys,
