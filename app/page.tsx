@@ -28,12 +28,13 @@ function HomeContent() {
   const {
     isError: isApiKeysError,
     isSuccess: isApiKeySuccess,
-    isPending: isGettingApiKeys,
+    isFetching: isGettingApiKeys,
   } = useGetApiKeys({enabled: code === null});
 
   const {
     data: requestApiKeysData,
-    isSuccess: isRequestApiKeysSuccess
+    isSuccess: isRequestApiKeysSuccess,
+    isFetching: isRequestingApiKeys,
   } = useRequestTokenWithCode({enabled: code !== null, code: code ?? ""})
 
   const {
@@ -118,6 +119,12 @@ function HomeContent() {
               Sessions
             </Button>
           </Box>
+        </Section>
+      }
+      {
+        isRequestingApiKeys &&
+        <Section>
+          <CustomLoading loadingText="Exchanging Spotify Code for Tokens"/>
         </Section>
       }
     </FixedPage>
