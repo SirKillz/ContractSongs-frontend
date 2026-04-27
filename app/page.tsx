@@ -7,6 +7,7 @@ import { Box, Typography, Alert, Button } from "@mui/material";
 
 import FixedPage from "@/components/common/FixedPage";
 import Section from "@/components/common/Section";
+import CustomLoading from "@/components/common/CustomLoading";
 
 import { useGetApiKeys, useCreateApiTokens, useRequestTokenWithCode } from "@/hooks/apiKeyManagementHooks";
 
@@ -27,6 +28,7 @@ function HomeContent() {
   const {
     isError: isApiKeysError,
     isSuccess: isApiKeySuccess,
+    isPending: isGettingApiKeys,
   } = useGetApiKeys({enabled: code === null});
 
   const {
@@ -87,6 +89,10 @@ function HomeContent() {
             </Button>
           </Box>
         </Section>
+      }
+      {
+        isGettingApiKeys && 
+        <CustomLoading loadingText="Searching for Spotify Tokens..."/>
       }
       {
         isApiKeySuccess && 
