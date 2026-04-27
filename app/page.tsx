@@ -127,6 +127,12 @@ function HomeContent() {
           <CustomLoading loadingText="Exchanging Spotify Code for Tokens"/>
         </Section>
       }
+      {
+        isCreatingApiTokens &&
+        <Section>
+          <CustomLoading loadingText="Creating Tokens in Database..."/>
+        </Section>
+      }
     </FixedPage>
   );
 }
