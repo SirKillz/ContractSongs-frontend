@@ -12,8 +12,33 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import FixedPage from "@/components/common/FixedPage"
+import AutoHeightPage from "@/components/common/AutoHeightPage";
 import Section from "@/components/common/Section"
+import NewTabLink from "@/components/common/NewTabLink";
+
+type columnHeader = {
+    name: string,
+    color: string,
+    width: string
+}
+
+const colHeaderDefs: columnHeader[] = [
+    {
+        name: "Session Link",
+        color: "white",
+        width: "25%"
+    },
+    {
+        name: "Spotify Playlist Name",
+        color: "white",
+        width: "50%"
+    },
+    {
+        name: "Created At",
+        color: "white",
+        width: "25%"
+    }
+]
 
 function formatDateCreated(dateString: string): string {
     const dateObj = new Date(dateString);
@@ -31,19 +56,13 @@ export default function SessionsPage() {
 
     const {
         isPending: isGettingSessions,
-        isError: isGettingSessionsError,
+        isError: isErrorGettingSessions,
         error: getSessionsError,
         data: getSessionsData
     } = useGetSessions({enabled: true})
 
-    const tableHeaders = [
-        "Session Link",
-        "Playlist Name",
-        "Created At"
-    ]
-
     return (
-        <FixedPage>
+        <AutoHeightPage>
             <Section>
                 <Box sx={{display: "flex", flexDirection: "column", gap: "15px", alignItems: "center"}}>
                     <Typography variant="h1" component={"h1"}>All Sessions:</Typography>
@@ -51,14 +70,15 @@ export default function SessionsPage() {
                         <Table sx={{minWidth: 650}}>
                             <TableHead>
                                 <TableRow sx={{backgroundColor: "black"}}>
-                                    {tableHeaders.map(h => {
+                                    {colHeaderDefs.map(h => {
                                         return (
                                             <TableCell 
-                                                key={h} 
+                                                key={h.name} 
+                                                width={h.width}
                                                 align="center"
-                                                sx={{color: "white"}}
+                                                sx={{color: h.color}}
                                             >
-                                                {h}
+                                                {h.name}
                                             </TableCell>
                                         )
                                     })}
@@ -69,14 +89,20 @@ export default function SessionsPage() {
                                     return (
                                         <TableRow key={session.id}>
                                             <TableCell align="center">
-                                                <Button 
+                                                <Button
                                                     variant="contained" 
                                                     onClick={() => router.push(`/sessions/${session.id}`)}
+                                                    sx={{backgroundColor: "primary.main"}}
                                                 >
                                                     Go to Session
                                                 </Button>
                                             </TableCell>
-                                            <TableCell align="center">{session.playlist_name}</TableCell>
+                                            <TableCell align="center">
+                                                <NewTabLink 
+                                                    link={`https://open.spotify.com/playlist/${session.playlist_id}`}
+                                                    displayText={session.playlist_name}
+                                                />
+                                            </TableCell>
                                             <TableCell align="center">{formatDateCreated(session.created_at)}</TableCell>
                                         </TableRow>
                                     )
@@ -86,10 +112,23 @@ export default function SessionsPage() {
                                     <TableRow>
                                         <TableCell align="center" colSpan={3}>
                                             <Alert 
+                                                severity="warning" 
+                                                sx={{display: "flex", justifyContent: "center"}}
+                                            >
+                                                No Sessions to Display!
+                                            </Alert>
+                                        </TableCell>
+                                    </TableRow>
+                                }
+                                {
+                                    isErrorGettingSessions && 
+                                    <TableRow>
+                                        <TableCell align="center" colSpan={3}>
+                                            <Alert 
                                                 severity="error" 
                                                 sx={{display: "flex", justifyContent: "center"}}
                                             >
-                                                No Sessions!
+                                                Error Getting Sessions!
                                             </Alert>
                                         </TableCell>
                                     </TableRow>
@@ -99,6 +138,6 @@ export default function SessionsPage() {
                     </TableContainer>
                 </Box>
             </Section>
-        </FixedPage>
+        </AutoHeightPage>
     )
 }
