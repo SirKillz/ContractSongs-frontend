@@ -15,6 +15,7 @@ import Paper from '@mui/material/Paper';
 import AutoHeightPage from "@/components/common/AutoHeightPage";
 import Section from "@/components/common/Section"
 import NewTabLink from "@/components/common/NewTabLink";
+import CustomLoading from "@/components/common/CustomLoading";
 
 type columnHeader = {
     name: string,
@@ -57,7 +58,6 @@ export default function SessionsPage() {
     const {
         isPending: isGettingSessions,
         isError: isErrorGettingSessions,
-        error: getSessionsError,
         data: getSessionsData
     } = useGetSessions({enabled: true})
 
@@ -85,6 +85,15 @@ export default function SessionsPage() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
+                                {
+                                    isGettingSessions && 
+                                    <TableRow>
+                                        <TableCell colSpan={3}>
+                                            <CustomLoading loadingText="Loading Sessions..."/>
+                                        </TableCell>
+                                    </TableRow>
+
+                                }
                                 {getSessionsData?.map(session => {
                                     return (
                                         <TableRow key={session.id}>
