@@ -65,7 +65,16 @@ export default function SessionsPage() {
         <AutoHeightPage>
             <Section>
                 <Box sx={{display: "flex", flexDirection: "column", gap: "15px", alignItems: "center"}}>
-                    <Typography variant="h1" component={"h1"}>All Sessions:</Typography>
+                    <Box sx={{display: "flex", width: "100%"}}>
+                        <Typography variant="h1" component={"h1"}>All Sessions:</Typography>
+                        <Button 
+                            sx={{marginLeft: "auto"}} 
+                            variant="contained"
+                            onClick={() => router.push("/sessions/create")}
+                        >
+                            + Create New Session
+                        </Button>
+                    </Box>
                     <TableContainer component={Paper}>
                         <Table sx={{minWidth: 650}}>
                             <TableHead>
