@@ -1,8 +1,9 @@
 "use client"
 
+import { useRouter } from "next/navigation";
 import { useGetSessions } from "@/hooks/sessions"
 
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Button, Alert } from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -25,6 +26,8 @@ function formatDateCreated(dateString: string): string {
 }
 
 export default function SessionsPage() {
+
+    const router = useRouter();
 
     const {
         isPending: isGettingSessions,
@@ -65,12 +68,32 @@ export default function SessionsPage() {
                                 {getSessionsData?.map(session => {
                                     return (
                                         <TableRow key={session.id}>
-                                            <TableCell align="center">{session.id}</TableCell>
+                                            <TableCell align="center">
+                                                <Button 
+                                                    variant="contained" 
+                                                    onClick={() => router.push(`/sessions/${session.id}`)}
+                                                >
+                                                    Go to Session
+                                                </Button>
+                                            </TableCell>
                                             <TableCell align="center">{session.playlist_name}</TableCell>
                                             <TableCell align="center">{formatDateCreated(session.created_at)}</TableCell>
                                         </TableRow>
                                     )
                                 })}
+                                {
+                                    getSessionsData?.length === 0 &&
+                                    <TableRow>
+                                        <TableCell align="center" colSpan={3}>
+                                            <Alert 
+                                                severity="error" 
+                                                sx={{display: "flex", justifyContent: "center"}}
+                                            >
+                                                No Sessions!
+                                            </Alert>
+                                        </TableCell>
+                                    </TableRow>
+                                }
                             </TableBody>
                         </Table>
                     </TableContainer>
