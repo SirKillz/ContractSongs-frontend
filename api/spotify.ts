@@ -1,6 +1,8 @@
 import { callAPI } from "./apiBase";
 
-export async function getSpotifyPlaylists() {
+import { SpotifyPlaylistResponse } from "@/types/spotify";
+
+export async function getSpotifyPlaylists(): Promise<SpotifyPlaylistResponse> {
     const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/spotify/playlists`;
     const fetchConfig = {
         method: "GET",

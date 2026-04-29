@@ -11,6 +11,6 @@ export function useGetSessions({enabled}: useGetSessionsOptions) {
         queryKey: ["sessions"],
         queryFn: getSessions,
         staleTime: 1000 * 60 * 5, // 5 minutes
-    enabled: enabled
+        enabled: enabled
     })
 }
