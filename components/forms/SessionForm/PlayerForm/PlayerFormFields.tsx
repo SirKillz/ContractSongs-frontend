@@ -10,7 +10,7 @@ import Section from "@/components/common/Section"
 
 import PlayerSongFields from "./PlayerSongFields"
 
-export default function PlayerFields() {
+export default function PlayerFormFields() {
     const {fields, append, remove} = useFieldArray({
         name: "players",
     })

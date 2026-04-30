@@ -4,15 +4,25 @@ import { AutocompleteElement, FormContainer } from "react-hook-form-mui";
 import Section from "@/components/common/Section";
 import { useGetSpotifyPlaylists } from "@/hooks/spotify";
 import { SpotifyPlaylist, SpotifySong } from "@/types/spotify";
-import PlayerFields from "./PlayerForm/PlayerFormFields";
+import PlayerFormFields from "./PlayerForm/PlayerFormFields";
+
+type SongOption = {
+    id: string,
+    label: string
+}
 
 type PlayerInput = {
     name: string
-    songs: SpotifySong[]
+    songs: SongOption[]
+}
+
+type PlaylistOption = {
+    id: string,
+    label: string
 }
 
 type SessionFormValues = {
-    playlist: SpotifyPlaylist
+    playlist: PlaylistOption
     players: PlayerInput[]
 }
 
@@ -37,7 +47,7 @@ export default function SessionForm() {
                 onSuccess={(data: SessionFormValues) => console.log(data)}
                 defaultValues={{
                     playlist: {},
-                    players: [{name: "", songs: [{id: "123", name: "Gang Plan Galleon"}]}],
+                    players: [{name: "", songs: [{id: "123", label: "Gang Plan Galleon"}]}],
                 }}
             >
                 <Stack sx={{marginTop: "25px", gap: 2}}>
@@ -49,7 +59,7 @@ export default function SessionForm() {
                         loading={isLoadingPlaylists}
                         required
                     />}
-                    <PlayerFields />
+                    <PlayerFormFields />
                     <Button variant="contained" type="submit">Create Session</Button>
                 </Stack>
             </FormContainer>
