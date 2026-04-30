@@ -1,14 +1,17 @@
 "use client"
 
-import { FormContainer, AutocompleteElement } from "react-hook-form-mui"
+import { AutocompleteElement, FormContainer, TextFieldElement, useFieldArray } from "react-hook-form-mui"
 
 import { useGetSpotifyPlaylists } from "@/hooks/spotify"
-import { useCreateSession } from "@/hooks/sessions"
 
 import AutoHeightPage from "@/components/common/AutoHeightPage"
 import Section from "@/components/common/Section"
-import { Typography, Stack, Button } from "@mui/material"
+import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material"
+import AddIcon from "@mui/icons-material/Add"
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 import { SpotifyPlaylistResponse } from "@/types/spotify"
+
+import PlayerFields from "@/components/common/PlayerForm/PlayerFormFields"
 
 function transformPlaylistData(playlistData: SpotifyPlaylistResponse) {
     return playlistData.playlists.map(pl => {
@@ -16,17 +19,29 @@ function transformPlaylistData(playlistData: SpotifyPlaylistResponse) {
     })
 }
 
+type SpotifySong = {
+    id: string,
+    name: string,
+    artist: string,
+    been_contracted: false
+}
+
 type PlaylistOption = {
     id: string
     label: string
 }
 
+type PlayerInput = {
+    name: string
+    songs: SpotifySong[]
+}
+
 type FormInputs = {
-    playlist: PlaylistOption
+    playlist: PlaylistOption | null
+    players: PlayerInput[]
 }
 
 export default function CreateSessionPage() {
-
 
     const {
         isPending: isLoadingPlaylists,
@@ -34,27 +49,16 @@ export default function CreateSessionPage() {
         data: spotifyPlaylistData
     } = useGetSpotifyPlaylists({enabled: true});
 
-    const {
-        mutate,
-        isPending: isCreatingSession,
-        isSuccess: isCreateSessionSuccess
-    } = useCreateSession()
-
-    function handleFormSubmit(data: PlaylistOption) {
-        const resolvedPlayListObj = {
-            playlist_id: data.id,
-            playlist_name: data.label
-        }
-        console.log(resolvedPlayListObj);
-        mutate(resolvedPlayListObj);
-    }
-
     return (
         <AutoHeightPage>
             <Section>
                 <Typography variant="h1" component={"h1"}>Create New Session</Typography>
                 <FormContainer
-                    onSuccess={(data: FormInputs) => handleFormSubmit(data.playlist)}
+                    onSuccess={(data: FormInputs) => console.log(data)}
+                    defaultValues={{
+                        playlist: null,
+                        players: [{name: "", songs: []}],
+                    }}
                 >
                     <Stack sx={{marginTop: "25px", gap: 2}}>
                         {!isErrorGettingPlaylists &&
@@ -65,6 +69,7 @@ export default function CreateSessionPage() {
                             loading={isLoadingPlaylists}
                             required
                         />}
+                        <PlayerFields />
                         <Button variant="contained" type="submit">Create Session</Button>
                     </Stack>
                 </FormContainer>
