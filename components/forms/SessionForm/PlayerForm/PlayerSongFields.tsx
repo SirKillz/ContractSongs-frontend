@@ -4,7 +4,7 @@ import { Typography, Stack, IconButton, Tooltip, Button } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 
-import Section from "../common/Section"
+import Section from "@/components/common/Section"
 import { useFieldArray, AutocompleteElement } from "react-hook-form-mui"
 
 import { SpotifySong } from "@/types/spotify"

@@ -6,7 +6,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 
 import {useFieldArray, TextFieldElement} from "react-hook-form-mui"
 
-import Section from "../common/Section"
+import Section from "@/components/common/Section"
 
 import PlayerSongFields from "./PlayerSongFields"
 
