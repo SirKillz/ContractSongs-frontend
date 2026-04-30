@@ -1,6 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-import { getSessions } from "@/api/sessions";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { getSessions, createSession } from "@/api/sessions";
+import { CreateContractSongSessionPayload } from "@/types/sessions";
 
 type useGetSessionsOptions = {
     enabled?: boolean
@@ -13,4 +16,17 @@ export function useGetSessions({enabled}: useGetSessionsOptions) {
         staleTime: 1000 * 60 * 5, // 5 minutes
         enabled: enabled
     })
+}
+
+export function useCreateSession() {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (payload: CreateContractSongSessionPayload) => createSession(payload),
+        onSuccess: async (data) => {
+            await queryClient.invalidateQueries({queryKey: ['sessions']})
+            router.push(`/sessions/${data.id}`)
+        }
+    })
+
 }

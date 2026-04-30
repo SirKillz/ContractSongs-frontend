@@ -13,5 +13,5 @@ export type SpotifyPlaylist = {
 
 export type SpotifyPlaylistResponse = {
     count: number,
-    playlists: SpotifyPlaylist
+    playlists: SpotifyPlaylist[]
 }

@@ -4,3 +4,8 @@ export type ContractSongSession = {
     playlist_name: string, 
     created_at: string
 }
+
+export type CreateContractSongSessionPayload = {
+    playlist_id: string,
+    playlist_name: string
+}
