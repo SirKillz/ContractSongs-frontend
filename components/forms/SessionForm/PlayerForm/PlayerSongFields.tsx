@@ -42,7 +42,7 @@ export default function PlayerSongFields({playerIndex}: Props) {
 
     return (
         <Section>
-            <Typography variant="h3" component={"h3"}>Player Songs:</Typography>
+            <Typography variant="h3" component={"h3"}>Player Contract Songs:</Typography>
             {isErrorGettingPlaylistSongs && 
                 <Alert severity="error">Error Getting Playlist Songs - You must be an owner or collaborator!</Alert>
             }
@@ -51,12 +51,13 @@ export default function PlayerSongFields({playerIndex}: Props) {
                     <Section key={field.id}>
                         <Stack direction="row" sx={{alignItems: "center", gap: 1}}>
                             <AutocompleteElement 
-                                name={`players.${playerIndex}.songs.${index}.id`}
+                                name={`players.${playerIndex}.songs.${index}`}
                                 options={songsData ? resolveSongOptions(songsData) : []}
                                 loading={isGettingPlaylistSongs}
                                 autocompleteProps={{
                                     sx: {flex: 1}
                                 }}
+                                label="Select a Contract Song"
                             />
                             <Tooltip title="Remove song">
                                 <IconButton

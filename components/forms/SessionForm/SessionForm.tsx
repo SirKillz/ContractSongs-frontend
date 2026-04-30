@@ -6,6 +6,7 @@ import { useGetSpotifyPlaylists } from "@/hooks/spotify";
 import { SpotifyPlaylist, SpotifySong } from "@/types/spotify";
 import PlayerFormFields from "./PlayerForm/PlayerFormFields";
 import { SessionFormValues } from "@/types/sessionForm";
+import { useCreateSession } from "@/hooks/sessions";
 
 
 function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
@@ -21,6 +22,12 @@ export default function SessionForm() {
             isError: isErrorGettingPlaylists,
             data: spotifyPlaylistData
         } = useGetSpotifyPlaylists({enabled: true});
+
+    const {
+        isPending: isCreatingSession,
+        isError: isErrorCreatingSession,
+        mutate: createSession
+    } = useCreateSession()
 
     return (
         <Section>
