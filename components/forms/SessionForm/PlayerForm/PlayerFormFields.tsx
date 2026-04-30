@@ -4,13 +4,17 @@ import { Stack, Tooltip, IconButton, Button, Typography,  } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 
-import {useFieldArray, TextFieldElement} from "react-hook-form-mui"
+import {useFieldArray, TextFieldElement, useWatch} from "react-hook-form-mui"
 
 import Section from "@/components/common/Section"
 
 import PlayerSongFields from "./PlayerSongFields"
+import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
+import { SessionFormValues } from "@/types/sessionForm"
+
 
 export default function PlayerFormFields() {
+    
     const {fields, append, remove} = useFieldArray({
         name: "players",
     })
@@ -39,12 +43,6 @@ export default function PlayerFormFields() {
                             </Tooltip>
                         </Stack>
                         <PlayerSongFields 
-                            playlist_songs={
-                                [
-                                    {id: "123", name: "Gang Plan Galleon", artist: "David Wise", been_contracted: false},
-                                    {id: "456", name: "Stickerbush Symphony", artist: "David Wise", been_contracted: false},
-                                ]
-                            }
                             playerIndex={index}
                         />
                     </Section>

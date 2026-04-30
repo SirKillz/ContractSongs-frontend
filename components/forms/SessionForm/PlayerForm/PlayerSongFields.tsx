@@ -5,22 +5,36 @@ import AddIcon from "@mui/icons-material/Add"
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 
 import Section from "@/components/common/Section"
-import { useFieldArray, AutocompleteElement } from "react-hook-form-mui"
+import { useFieldArray, AutocompleteElement, useWatch } from "react-hook-form-mui"
 
 import { SpotifySong } from "@/types/spotify"
+import { SessionFormValues } from "@/types/sessionForm"
+import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
 
-function transformPlaylistSongs(playlist_songs: SpotifySong[]) {
+function resolveSongOptions(playlist_songs: SpotifySong[]) {
     return playlist_songs.map((song) => {
         return {id: song.id, label: song.name}
     })
 }
 
-type props = {
-    playlist_songs: SpotifySong[]
+type Props = {
     playerIndex: number
 }
 
-export default function PlayerSongFields({playlist_songs, playerIndex}: props) {
+export default function PlayerSongFields({playerIndex}: Props) {
+
+    const spotifyPlaylist = useWatch<SessionFormValues>({
+            name: "playlist.id"
+        })
+        
+        const {
+            isFetching: isGettingPlaylistSongs,
+            isError: isErrorGettingPlaylistSongs,
+            data: songsData
+        } = useGetSpotifyPlaylistSongs({
+            enabled: !!spotifyPlaylist,
+            playlist_id: typeof(spotifyPlaylist) === "string" ? spotifyPlaylist : ""
+        })
 
     const {fields, append, remove} = useFieldArray({
         name: `players.${playerIndex}.songs`
@@ -35,7 +49,8 @@ export default function PlayerSongFields({playlist_songs, playerIndex}: props) {
                         <Stack direction="row" sx={{alignItems: "center", gap: 1}}>
                             <AutocompleteElement 
                                 name={`players.${playerIndex}.songs.${index}.id`}
-                                options={transformPlaylistSongs(playlist_songs)}
+                                options={songsData ? resolveSongOptions(songsData) : []}
+                                loading={isGettingPlaylistSongs}
                                 autocompleteProps={{
                                     sx: {flex: 1}
                                 }}

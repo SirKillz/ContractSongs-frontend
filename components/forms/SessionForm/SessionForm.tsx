@@ -5,26 +5,8 @@ import Section from "@/components/common/Section";
 import { useGetSpotifyPlaylists } from "@/hooks/spotify";
 import { SpotifyPlaylist, SpotifySong } from "@/types/spotify";
 import PlayerFormFields from "./PlayerForm/PlayerFormFields";
+import { SessionFormValues } from "@/types/sessionForm";
 
-type SongOption = {
-    id: string,
-    label: string
-}
-
-type PlayerInput = {
-    name: string
-    songs: SongOption[]
-}
-
-type PlaylistOption = {
-    id: string,
-    label: string
-}
-
-type SessionFormValues = {
-    playlist: PlaylistOption
-    players: PlayerInput[]
-}
 
 function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
     return playlistData.map((pl) => {
