@@ -1,6 +1,6 @@
 "use client"
 
-import { Typography, Stack, IconButton, Tooltip, Button } from "@mui/material"
+import { Typography, Stack, IconButton, Tooltip, Button, Alert } from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 
@@ -43,6 +43,9 @@ export default function PlayerSongFields({playerIndex}: Props) {
     return (
         <Section>
             <Typography variant="h3" component={"h3"}>Player Songs:</Typography>
+            {isErrorGettingPlaylistSongs && 
+                <Alert severity="error">Error Getting Playlist Songs - You must be an owner or collaborator!</Alert>
+            }
             <Stack sx={{gap: 2, marginTop: "25px"}}>
                 {fields.map((field, index) => (
                     <Section key={field.id}>
