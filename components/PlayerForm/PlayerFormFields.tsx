@@ -6,11 +6,11 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 
 import {useFieldArray, TextFieldElement} from "react-hook-form-mui"
 
-import Section from "../Section"
+import Section from "../common/Section"
 
 import PlayerSongFields from "./PlayerSongFields"
 
-export default function  PlayerFields() {
+export default function PlayerFields() {
     const {fields, append, remove} = useFieldArray({
         name: "players",
     })
@@ -38,7 +38,15 @@ export default function  PlayerFields() {
                                 </IconButton>
                             </Tooltip>
                         </Stack>
-                        <PlayerSongFields />
+                        <PlayerSongFields 
+                            playlist_songs={
+                                [
+                                    {id: "123", name: "Gang Plan Galleon", artist: "David Wise", been_contracted: false},
+                                    {id: "456", name: "Stickerbush Symphony", artist: "David Wise", been_contracted: false},
+                                ]
+                            }
+                            playerIndex={index}
+                        />
                     </Section>
                 ))}
                 <Button

@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add"
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 import { SpotifyPlaylistResponse } from "@/types/spotify"
 
-import PlayerFields from "@/components/common/PlayerForm/PlayerFormFields"
+import PlayerFields from "@/components/PlayerForm/PlayerFormFields"
 
 function transformPlaylistData(playlistData: SpotifyPlaylistResponse) {
     return playlistData.playlists.map(pl => {
@@ -57,7 +57,7 @@ export default function CreateSessionPage() {
                     onSuccess={(data: FormInputs) => console.log(data)}
                     defaultValues={{
                         playlist: null,
-                        players: [{name: "", songs: []}],
+                        players: [{name: "", songs: [{id: "123", name: "Gang Plan Galleon", artist: "David Wise", been_contracted: false}]}],
                     }}
                 >
                     <Stack sx={{marginTop: "25px", gap: 2}}>
