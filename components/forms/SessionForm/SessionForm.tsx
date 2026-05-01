@@ -34,13 +34,18 @@ type ResolvedFormData<T> = ResolvedFormDataSuccess<T> | ResolvedFormDataFailure
 async function resolveFormData(data: SessionFormValues): Promise<ResolvedFormData<CreateContractSongSessionPayload>> {
 
     try {
-        const playlists = await getSpotifyPlaylists()
-        const playlistSongs = await getSpotifyPlaylistSongs(data.playlist.id)
+        if (!data.playlist?.id) {
+            throw new Error("Playlist is required")
+        }
 
-        const playlist = playlists.playlists.find((pl) => pl.id === data.playlist.id)
+        const playlistId = data.playlist.id
+        const playlists = await getSpotifyPlaylists()
+        const playlistSongs = await getSpotifyPlaylistSongs(playlistId)
+
+        const playlist = playlists.playlists.find((pl) => pl.id === playlistId)
 
         if (!playlist) {
-            throw new Error(`Playlist not found: ${data.playlist.id}`)
+            throw new Error(`Playlist not found: ${playlistId}`)
         }
         
         const players = data.players.map(player => {
@@ -101,7 +106,7 @@ export default function SessionForm() {
                     createSession(resolvedData.data)
                 }}
                 defaultValues={{
-                    playlist: {},
+                    playlist: null,
                     players: [],
                 }}
             >
@@ -113,6 +118,9 @@ export default function SessionForm() {
                         label={isLoadingPlaylists ? "Loading Playlists..." : "Select Spotify Playlist"}
                         loading={isLoadingPlaylists}
                         required
+                        rules={{
+                            validate: (value) => !!value?.id || "Playlist is required"
+                        }}
                     />}
                     <PlayerFormFields />
                     <Button variant="contained" type="submit">Create Session</Button>

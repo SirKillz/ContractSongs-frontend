@@ -14,6 +14,6 @@ export type PlaylistOption = {
 }
 
 export type SessionFormValues = {
-    playlist: PlaylistOption
+    playlist: PlaylistOption | null
     players: PlayerInput[]
 }
