@@ -1,3 +1,5 @@
+import { Player } from "./players"
+
 export type ContractSongSession = {
     id: number,
     playlist_id: string,
@@ -7,5 +9,6 @@ export type ContractSongSession = {
 
 export type CreateContractSongSessionPayload = {
     playlist_id: string,
-    playlist_name: string
+    playlist_name: string,
+    players: Player[]
 }

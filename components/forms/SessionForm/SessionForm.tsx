@@ -8,6 +8,8 @@ import PlayerFormFields from "./PlayerForm/PlayerFormFields";
 import { SessionFormValues } from "@/types/sessionForm";
 import { useCreateSession } from "@/hooks/sessions";
 import { getSpotifyPlaylistSongs, getSpotifyPlaylists } from "@/api/spotify";
+import { CreateContractSongSessionPayload } from "@/types/sessions";
+import { getErrorMessage } from "@/helpers/errors";
 
 
 function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
@@ -16,24 +18,56 @@ function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
     })
 }
 
-async function resolveFormData(data: SessionFormValues) {
-    const playlists = await getSpotifyPlaylists()
-    const playlistSongs = await getSpotifyPlaylistSongs(data.playlist.id)
+type ResolvedFormDataSuccess<T> = {
+    ok: true,
+    data: T
+}
 
-    const playlist = playlists.playlists.find((pl) => pl.id === data.playlist.id)
-    const players = data.players.map(player => {
-        return {
-            name: player.name,
-            songs: player.songs.map(song => {
-                return playlistSongs.find(spotifySong => spotifySong.id === song.id)
-            })
+type ResolvedFormDataFailure = {
+    ok: false,
+    error: string
+}
+
+type ResolvedFormData<T> = ResolvedFormDataSuccess<T> | ResolvedFormDataFailure
+
+async function resolveFormData(data: SessionFormValues): Promise<ResolvedFormData<CreateContractSongSessionPayload>> {
+
+    try {
+        const playlists = await getSpotifyPlaylists()
+        const playlistSongs = await getSpotifyPlaylistSongs(data.playlist.id)
+
+        const playlist = playlists.playlists.find((pl) => pl.id === data.playlist.id)
+
+        if (!playlist) {
+            throw new Error(`Playlist not found: ${data.playlist.id}`)
         }
-    })
+        
+        const players = data.players.map(player => {
+            return {
+                name: player.name,
+                songs: player.songs.map(song => {
+                    const matchedSong = playlistSongs.find(spotifySong => spotifySong.id === song.id)
+                    if (!matchedSong) {
+                        throw new Error(`Song not found: ${song.id}`)
+                    }
+                    return matchedSong;
+                })
+            }
+        })
 
-    return {
-        playlist_id: playlist?.id,
-        playlist_name: playlist?.name,
-        players: players
+        return {
+            ok: true,
+            data: {
+                playlist_id: playlist.id,
+                playlist_name: playlist.name,
+                players: players
+            }
+        }
+    } catch(err) {
+        return {
+            ok: false,
+            error: getErrorMessage(err)
+        }
     }
 }
 
@@ -58,7 +92,11 @@ export default function SessionForm() {
             <FormContainer<SessionFormValues>
                 onSuccess={async (data: SessionFormValues) => {
                     const resolvedData = await resolveFormData(data)
-                    console.log(resolvedData);
+                    if (!resolvedData.ok) {
+                        alert(resolvedData.error)
+                        return
+                    }
+                    createSession(resolvedData.data)
                 }}
                 defaultValues={{
                     playlist: {},
