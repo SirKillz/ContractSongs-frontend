@@ -13,7 +13,7 @@ import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
 
 function resolveSongOptions(playlist_songs: SpotifySong[]) {
     return playlist_songs.map((song) => {
-        return {id: song.id, label: song.name}
+        return {id: song.id, label: `${song.name} - ${song.artist}`}
     })
 }
 

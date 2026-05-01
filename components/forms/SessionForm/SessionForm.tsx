@@ -62,7 +62,7 @@ export default function SessionForm() {
                 }}
                 defaultValues={{
                     playlist: {},
-                    players: [{name: "", songs: [{id: "123", label: "Gang Plan Galleon"}]}],
+                    players: [],
                 }}
             >
                 <Stack sx={{marginTop: "25px", gap: 2}}>
