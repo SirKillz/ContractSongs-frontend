@@ -10,6 +10,7 @@ import { useCreateSession } from "@/hooks/sessions";
 import { getSpotifyPlaylistSongs, getSpotifyPlaylists } from "@/api/spotify";
 import { CreateContractSongSessionPayload } from "@/types/sessions";
 import { getErrorMessage } from "@/helpers/errors";
+import LoadingOverlay from "@/components/common/LoadingOverlay";
 
 
 function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
@@ -88,6 +89,7 @@ export default function SessionForm() {
 
     return (
         <Section>
+            {isCreatingSession && <LoadingOverlay isVisible={true} loadingText="Creating Session..."/>}
             <Typography variant="h1" component={"h1"}>Create New Session</Typography>
             <FormContainer<SessionFormValues>
                 onSuccess={async (data: SessionFormValues) => {
