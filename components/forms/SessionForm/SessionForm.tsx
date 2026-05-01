@@ -7,12 +7,34 @@ import { SpotifyPlaylist, SpotifySong } from "@/types/spotify";
 import PlayerFormFields from "./PlayerForm/PlayerFormFields";
 import { SessionFormValues } from "@/types/sessionForm";
 import { useCreateSession } from "@/hooks/sessions";
+import { getSpotifyPlaylistSongs, getSpotifyPlaylists } from "@/api/spotify";
 
 
 function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
     return playlistData.map((pl) => {
         return {id: pl.id, label: pl.name}
     })
+}
+
+async function resolveFormData(data: SessionFormValues) {
+    const playlists = await getSpotifyPlaylists()
+    const playlistSongs = await getSpotifyPlaylistSongs(data.playlist.id)
+
+    const playlist = playlists.playlists.find((pl) => pl.id === data.playlist.id)
+    const players = data.players.map(player => {
+        return {
+            name: player.name,
+            songs: player.songs.map(song => {
+                return playlistSongs.find(spotifySong => spotifySong.id === song.id)
+            })
+        }
+    })
+
+    return {
+        playlist_id: playlist?.id,
+        playlist_name: playlist?.name,
+        players: players
+    }
 }
 
 export default function SessionForm() {
@@ -22,6 +44,7 @@ export default function SessionForm() {
             isError: isErrorGettingPlaylists,
             data: spotifyPlaylistData
         } = useGetSpotifyPlaylists({enabled: true});
+
 
     const {
         isPending: isCreatingSession,
@@ -33,7 +56,10 @@ export default function SessionForm() {
         <Section>
             <Typography variant="h1" component={"h1"}>Create New Session</Typography>
             <FormContainer<SessionFormValues>
-                onSuccess={(data: SessionFormValues) => console.log(data)}
+                onSuccess={async (data: SessionFormValues) => {
+                    const resolvedData = await resolveFormData(data)
+                    console.log(resolvedData);
+                }}
                 defaultValues={{
                     playlist: {},
                     players: [{name: "", songs: [{id: "123", label: "Gang Plan Galleon"}]}],
