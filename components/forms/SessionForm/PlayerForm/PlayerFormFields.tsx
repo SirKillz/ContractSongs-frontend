@@ -31,6 +31,9 @@ export default function PlayerFormFields() {
                                 label={`Player ${index + 1}`}
                                 fullWidth
                                 required
+                                rules={{
+                                    required: "Player name is required!"
+                                }}
                             />
                             <Tooltip title="Remove player">
                                 <IconButton

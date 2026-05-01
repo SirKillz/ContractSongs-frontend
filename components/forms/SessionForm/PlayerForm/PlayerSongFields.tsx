@@ -58,6 +58,10 @@ export default function PlayerSongFields({playerIndex}: Props) {
                                     sx: {flex: 1}
                                 }}
                                 label="Select a Contract Song"
+                                required
+                                rules={{
+                                    validate: (value) => !!value?.id || "Select a song!"
+                                }}
                             />
                             <Tooltip title="Remove song">
                                 <IconButton
