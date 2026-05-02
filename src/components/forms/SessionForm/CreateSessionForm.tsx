@@ -12,13 +12,6 @@ import { CreateContractSongSessionPayload } from "@/types/sessions";
 import { getErrorMessage } from "@/helpers/errors";
 import LoadingOverlay from "@/components/common/LoadingOverlay";
 
-
-function resolvePlaylistOptions(playlistData: SpotifyPlaylist[]) {
-    return playlistData.map((pl) => {
-        return {id: pl.id, label: pl.name}
-    })
-}
-
 type ResolvedFormDataSuccess<T> = {
     ok: true,
     data: T
@@ -39,15 +32,10 @@ async function resolveFormData(data: CreateSessionFormValues): Promise<ResolvedF
         }
 
         const playlistId = data.playlist.id
-        const playlists = await getSpotifyPlaylists()
-        const playlistSongs = await getSpotifyPlaylistSongs(playlistId)
+        const playlistName = data.playlist.name
 
-        const playlist = playlists.playlists.find((pl) => pl.id === playlistId)
+        const playlistSongs = await getSpotifyPlaylistSongs(playlistId);
 
-        if (!playlist) {
-            throw new Error(`Playlist not found: ${playlistId}`)
-        }
-        
         const players = data.players.map(player => {
             return {
                 name: player.name,
@@ -64,8 +52,8 @@ async function resolveFormData(data: CreateSessionFormValues): Promise<ResolvedF
         return {
             ok: true,
             data: {
-                playlist_id: playlist.id,
-                playlist_name: playlist.name,
+                playlist_id: playlistId,
+                playlist_name: playlistName,
                 players: players
             }
         }
@@ -117,6 +105,9 @@ export default function CreateSessionForm() {
                         options={spotifyPlaylistData.playlists}
                         label={isLoadingPlaylists ? "Loading Playlists..." : "Select Spotify Playlist"}
                         loading={isLoadingPlaylists}
+                        autocompleteProps={{
+                            getOptionLabel: (pl) => pl.name
+                        }}
                         required
                         rules={{
                             validate: (value) => !!value?.id || "Playlist is required"

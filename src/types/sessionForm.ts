@@ -1,24 +1,16 @@
-export type SongOption = {
-    id: string,
-    label: string
-}
+import { SpotifyPlaylist, SpotifySong } from "./spotify"
 
 export type PlayerInput = {
     name: string
-    songs: SongOption[]
-}
-
-export type PlaylistOption = {
-    id: string,
-    label: string
+    songs: SpotifySong[]
 }
 
 export type CreateSessionFormValues = {
-    playlist: PlaylistOption | null
+    playlist: SpotifyPlaylist | null
     players: PlayerInput[]
 }
 
 export type EditSessionFormValues = {
-    playlist: PlaylistOption,
+    playlist: SpotifyPlaylist,
     players: PlayerInput[]
 }

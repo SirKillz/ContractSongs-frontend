@@ -7,15 +7,8 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined"
 import Section from "@/components/common/Section"
 import { useFieldArray, AutocompleteElement, useWatch } from "react-hook-form-mui"
 
-import { SpotifySong } from "@/types/spotify"
 import { CreateSessionFormValues } from "@/types/sessionForm"
 import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
-
-function resolveSongOptions(playlist_songs: SpotifySong[]) {
-    return playlist_songs.map((song) => {
-        return {id: song.id, label: `${song.name} - ${song.artist}`}
-    })
-}
 
 type Props = {
     playerIndex: number
@@ -52,10 +45,11 @@ export default function PlayerSongFields({playerIndex}: Props) {
                         <Stack direction="row" sx={{alignItems: "center", gap: 1}}>
                             <AutocompleteElement 
                                 name={`players.${playerIndex}.songs.${index}`}
-                                options={songsData ? resolveSongOptions(songsData) : []}
+                                options={songsData ?? []}
                                 loading={isGettingPlaylistSongs}
                                 autocompleteProps={{
-                                    sx: {flex: 1}
+                                    sx: {flex: 1},
+                                    getOptionLabel: (song) => `${song.name} - ${song.artist}`
                                 }}
                                 label="Select a Contract Song"
                                 required
