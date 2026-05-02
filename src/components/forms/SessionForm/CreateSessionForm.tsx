@@ -5,7 +5,7 @@ import Section from "@/components/common/Section";
 import { useGetSpotifyPlaylists } from "@/hooks/spotify";
 import { SpotifyPlaylist, SpotifySong } from "@/types/spotify";
 import PlayerFormFields from "./PlayerForm/PlayerFormFields";
-import { SessionFormValues } from "@/types/sessionForm";
+import { CreateSessionFormValues } from "@/types/sessionForm";
 import { useCreateSession } from "@/hooks/sessions";
 import { getSpotifyPlaylistSongs, getSpotifyPlaylists } from "@/api/spotify";
 import { CreateContractSongSessionPayload } from "@/types/sessions";
@@ -31,7 +31,7 @@ type ResolvedFormDataFailure = {
 
 type ResolvedFormData<T> = ResolvedFormDataSuccess<T> | ResolvedFormDataFailure
 
-async function resolveFormData(data: SessionFormValues): Promise<ResolvedFormData<CreateContractSongSessionPayload>> {
+async function resolveFormData(data: CreateSessionFormValues): Promise<ResolvedFormData<CreateContractSongSessionPayload>> {
 
     try {
         if (!data.playlist?.id) {
@@ -96,8 +96,8 @@ export default function CreateSessionForm() {
         <Section>
             {isCreatingSession && <LoadingOverlay isVisible={true} loadingText="Creating Session..."/>}
             <Typography variant="h1" component={"h1"}>Create New Session</Typography>
-            <FormContainer<SessionFormValues>
-                onSuccess={async (data: SessionFormValues) => {
+            <FormContainer<CreateSessionFormValues>
+                onSuccess={async (data: CreateSessionFormValues) => {
                     const resolvedData = await resolveFormData(data)
                     if (!resolvedData.ok) {
                         alert(resolvedData.error)

@@ -10,7 +10,7 @@ import Section from "@/components/common/Section"
 
 import PlayerSongFields from "./PlayerSongFields"
 import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
-import { SessionFormValues } from "@/types/sessionForm"
+import { CreateSessionFormValues } from "@/types/sessionForm"
 
 
 export default function PlayerFormFields() {

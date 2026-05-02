@@ -13,7 +13,11 @@ export type PlaylistOption = {
     label: string
 }
 
-export type SessionFormValues = {
+export type CreateSessionFormValues = {
     playlist: PlaylistOption | null
+    players: PlayerInput[]
+}
+
+export type EditSessionFormValues = {
     players: PlayerInput[]
 }

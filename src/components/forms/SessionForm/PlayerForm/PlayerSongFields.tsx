@@ -8,7 +8,7 @@ import Section from "@/components/common/Section"
 import { useFieldArray, AutocompleteElement, useWatch } from "react-hook-form-mui"
 
 import { SpotifySong } from "@/types/spotify"
-import { SessionFormValues } from "@/types/sessionForm"
+import { CreateSessionFormValues } from "@/types/sessionForm"
 import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
 
 function resolveSongOptions(playlist_songs: SpotifySong[]) {
@@ -23,7 +23,7 @@ type Props = {
 
 export default function PlayerSongFields({playerIndex}: Props) {
 
-    const spotifyPlaylist = useWatch<SessionFormValues>({
+    const spotifyPlaylist = useWatch<CreateSessionFormValues>({
             name: "playlist.id"
         })
         
