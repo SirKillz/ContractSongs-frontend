@@ -49,13 +49,13 @@ export default function EditSessionForm({sessionId}: Props) {
                     console.log(data);
                 }}
                 defaultValues={{
-                    playlist: {id: sessionData.playlist_id},
+                    playlist: {id: sessionData.playlist_id}, // only used for the watched value which won't matter in edit mode
                     players: sessionData.players,
                 }}
             >
                 <Stack sx={{marginTop: "25px", gap: 2}}>            
                     <PlayerFormFields />
-                    <Button variant="contained" type="submit">Create Session</Button>
+                    <Button variant="contained" type="submit">Save</Button>
                 </Stack>
             </FormContainer>
             }

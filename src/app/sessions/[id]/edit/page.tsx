@@ -22,7 +22,6 @@ export default function EditSessionPage() {
     return (
         <AutoHeightPage>
             <Section>
-                <Typography variant="h1" component={"h1"}>Edit Session</Typography>
                 <EditSessionForm sessionId={Number(id)}/>
             </Section>
         </AutoHeightPage>
