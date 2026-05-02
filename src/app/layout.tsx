@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   description: "Spotify API Contract Songs",
 };
 
+import { Box } from "@mui/material";
+
 import Providers from "./providers";
+import NavBar from "@/components/common/NavBar";
 
 export default function RootLayout({
   children,
@@ -19,7 +22,12 @@ export default function RootLayout({
     >
       <body>
         <Providers>
-          {children}
+          <Box
+            sx={{display: "flex", flexDirection: "column"}}
+          >
+            <NavBar />
+            {children}
+          </Box>
         </Providers>
       </body>
     </html>
