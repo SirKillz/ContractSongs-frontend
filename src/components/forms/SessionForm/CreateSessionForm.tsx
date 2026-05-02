@@ -111,10 +111,10 @@ export default function CreateSessionForm() {
                 }}
             >
                 <Stack sx={{marginTop: "25px", gap: 2}}>
-                    {!isErrorGettingPlaylists &&
+                    {!isErrorGettingPlaylists && spotifyPlaylistData &&
                     <AutocompleteElement 
                         name="playlist"
-                        options={spotifyPlaylistData ? resolvePlaylistOptions(spotifyPlaylistData.playlists): []}
+                        options={spotifyPlaylistData.playlists}
                         label={isLoadingPlaylists ? "Loading Playlists..." : "Select Spotify Playlist"}
                         loading={isLoadingPlaylists}
                         required
