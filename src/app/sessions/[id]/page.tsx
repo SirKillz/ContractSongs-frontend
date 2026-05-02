@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation"
-import { Typography, IconButton, Stack } from "@mui/material";
-import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
-import StopCircleIcon from '@mui/icons-material/StopCircle';
+import { Typography, Stack } from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,13 +11,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import { fetchEventSource } from "@microsoft/fetch-event-source";
-
 import AutoHeightPage from "@/components/common/AutoHeightPage";
 import { useGetSession } from "@/hooks/sessions";
 import Section from "@/components/common/Section";
-
-import { startSpotifyContractSongService, stopSpotifyContractSongService } from "@/api/spotify";
+import ToggleMonitoringButton from "@/components/MonitoringButtons/ToggleMonitoringButton";
 
 export default function SessionDetailPage() {
     const [polling, setPolling] = useState(false);
@@ -42,40 +37,7 @@ export default function SessionDetailPage() {
                 <Stack direction="row" sx={{alignItems: "center"}}>
                     <Typography variant="h1" component={"h1"}>Playlist: {sessionData?.playlist_name}</Typography>
                     <Stack direction="row" sx={{gap: 1, alignItems: "center", marginLeft: "auto"}}>
-                        <Typography variant="body1" component={"p"}>{polling ? "Stop Monitoring": "Start Monitoring"}</Typography>
-                        {
-                            polling ? 
-                            <IconButton 
-                                type="button" 
-                                size="large"
-                                onClick={async () => {
-                                    stopSpotifyContractSongService()
-                                    setPolling(false)
-                                }}
-                                color="error"
-                                sx={{marginLeft: "auto"}}
-                            >
-                                <StopCircleIcon fontSize="inherit"/>
-                            </IconButton>
-                            :
-                            <IconButton 
-                                type="button" 
-                                size="large"
-                                onClick={async() => {
-                                    startSpotifyContractSongService(Number(id))
-                                    setPolling(true)
-                                    await fetchEventSource('http://localhost:8000/api/v1/sessions/contract-song-events', {
-                                        onmessage(ev) {
-                                            console.log(ev.data)
-                                        }
-                                    })
-                                }}
-                                color="primary"
-                                sx={{marginLeft: "auto"}}
-                            >
-                                <PlayCircleFilledIcon fontSize="inherit"/>
-                            </IconButton>
-                        }
+                        <ToggleMonitoringButton sessionId={Number(id)}/>
                     </Stack>
                 </Stack>
                 

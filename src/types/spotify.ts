@@ -15,3 +15,7 @@ export type SpotifyPlaylistResponse = {
     count: number,
     playlists: SpotifyPlaylist[]
 }
+
+export type ContactSongMonitoringStatus = {
+    running: boolean
+}
