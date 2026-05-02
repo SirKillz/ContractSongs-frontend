@@ -2,7 +2,7 @@
 
 import AutoHeightPage from "@/components/common/AutoHeightPage"
 
-import SessionForm from "@/components/forms/SessionForm/SessionForm"
+import CreateSessionForm from "@/components/forms/SessionForm/CreateSessionForm"
 
 
 export default function CreateSessionPage() {
@@ -10,7 +10,7 @@ export default function CreateSessionPage() {
 
     return (
         <AutoHeightPage>
-            <SessionForm />
+            <CreateSessionForm />
         </AutoHeightPage>
     )
 }

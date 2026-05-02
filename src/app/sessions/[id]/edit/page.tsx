@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import Section from "@/components/common/Section";
 
 import { useGetSession } from "@/hooks/sessions";
+import CreateSessionForm from "@/components/forms/SessionForm/CreateSessionForm";
 
 export default function EditSessionPage() {
 
@@ -22,6 +23,7 @@ export default function EditSessionPage() {
         <AutoHeightPage>
             <Section>
                 <Typography variant="h1" component={"h1"}>Edit Session</Typography>
+                <CreateSessionForm />
             </Section>
         </AutoHeightPage>
     )

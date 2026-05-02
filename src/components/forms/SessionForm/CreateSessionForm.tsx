@@ -77,7 +77,7 @@ async function resolveFormData(data: SessionFormValues): Promise<ResolvedFormDat
     }
 }
 
-export default function SessionForm() {
+export default function CreateSessionForm() {
 
     const {
             isPending: isLoadingPlaylists,
