@@ -8,8 +8,11 @@ import { useGetSession } from "@/hooks/sessions"
 import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
 import { EditSessionFormValues } from "@/types/sessionForm"
 
+import CustomLoading from "@/components/common/CustomLoading"
+
 import Section from "@/components/common/Section"
 import PlayerFormFields from "./PlayerForm/PlayerFormFields"
+
 
 type Props = {
     sessionId: number
@@ -33,6 +36,8 @@ export default function EditSessionForm({sessionId}: Props) {
     return (
         <Section>
             <Typography variant="h1" component={"h1"}>Edit Existing Session</Typography>
+            {isGettingPlaylistSongs && <CustomLoading loadingText="Loading Session Data..."/>}
+            {!!sessionData && 
             <FormContainer<EditSessionFormValues>
                 onSuccess={async (data: EditSessionFormValues) => {
                     // const resolvedData = await resolveFormData(data)
@@ -44,7 +49,8 @@ export default function EditSessionForm({sessionId}: Props) {
                     console.log(data);
                 }}
                 defaultValues={{
-                    players: sessionData?.players,
+                    playlist: {id: sessionData.playlist_id},
+                    players: sessionData.players,
                 }}
             >
                 <Stack sx={{marginTop: "25px", gap: 2}}>            
@@ -52,6 +58,7 @@ export default function EditSessionForm({sessionId}: Props) {
                     <Button variant="contained" type="submit">Create Session</Button>
                 </Stack>
             </FormContainer>
+            }
         </Section>
     )
 }

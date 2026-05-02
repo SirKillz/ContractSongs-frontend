@@ -19,5 +19,6 @@ export type CreateSessionFormValues = {
 }
 
 export type EditSessionFormValues = {
+    playlist: PlaylistOption,
     players: PlayerInput[]
 }
