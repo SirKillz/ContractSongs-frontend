@@ -55,7 +55,7 @@ export default function SessionDetailPage() {
                         <TableBody>
                             {sessionData?.players.map(player => {
                                 return (
-                                    <TableRow>
+                                    <TableRow key={player.name}>
                                         <TableCell align="center">{player.name}</TableCell>
                                         <TableCell align="center">{player.songs.length}</TableCell>
                                         <TableCell align="center">
