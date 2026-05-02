@@ -1,15 +1,15 @@
-import { Player } from "./players"
+import { CreatePlayer, ReadPlayer } from "./players"
 
 export type ReadContractSongSession = {
     id: number,
     playlist_id: string,
     playlist_name: string, 
     created_at: string
-    players: Player[]
+    players: ReadPlayer[]
 }
 
 export type CreateContractSongSessionPayload = {
     playlist_id: string,
     playlist_name: string,
-    players: Player[]
+    players: CreatePlayer[]
 }
