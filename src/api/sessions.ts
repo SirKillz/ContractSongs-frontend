@@ -24,3 +24,14 @@ export async function createSession(payload: CreateContractSongSessionPayload): 
     }
     return await callAPI(url, fetchConfig);
 }
+
+export async function getSession(id: number) {
+    const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/sessions/${id}`
+    const fetchConfig = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+    return await callAPI(url, fetchConfig);
+}

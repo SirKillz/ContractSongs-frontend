@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getSessions, createSession } from "@/api/sessions";
+import { getSessions, createSession, getSession } from "@/api/sessions";
 import { CreateContractSongSessionPayload } from "@/types/sessions";
 
 type useGetSessionsOptions = {
@@ -29,4 +29,17 @@ export function useCreateSession() {
         }
     })
 
+}
+
+type useGetSessionOptions = {
+    enabled?: boolean,
+    id: number
+}
+export function useGetSession({enabled, id}: useGetSessionOptions) {
+    return useQuery({
+        queryKey: ['sessions', id],
+        queryFn: () => getSession(id),
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        enabled: enabled
+    })
 }
