@@ -16,6 +16,7 @@ import AutoHeightPage from "@/components/common/AutoHeightPage";
 import Section from "@/components/common/Section"
 import NewTabLink from "@/components/common/NewTabLink";
 import CustomLoading from "@/components/common/CustomLoading";
+import DeleteSessionButton from "@/components/Sessions/DeleteSessionButton";
 
 type columnHeader = {
     name: string,
@@ -27,7 +28,7 @@ const colHeaderDefs: columnHeader[] = [
     {
         name: "Session Link",
         color: "white",
-        width: "25%"
+        width: "20%"
     },
     {
         name: "Spotify Playlist Name",
@@ -37,7 +38,12 @@ const colHeaderDefs: columnHeader[] = [
     {
         name: "Created At",
         color: "white",
-        width: "25%"
+        width: "20%"
+    },
+    {
+        name: "Manage",
+        color: "white",
+        width: "10"
     }
 ]
 
@@ -122,6 +128,7 @@ export default function SessionsPage() {
                                                 />
                                             </TableCell>
                                             <TableCell align="center">{formatDateCreated(session.created_at)}</TableCell>
+                                            <TableCell align="center"><DeleteSessionButton sessionId={session.id}/></TableCell>
                                         </TableRow>
                                     )
                                 })}

@@ -12,7 +12,8 @@ export default function Section({children}: props) {
             padding: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: "25px"
+            gap: "25px",
+            backgroundColor: "white"
         }}>
             {children}
         </Box>
