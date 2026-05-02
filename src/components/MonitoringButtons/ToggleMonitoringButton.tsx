@@ -1,5 +1,5 @@
 import { useRef } from "react";
-
+import Image from "next/image";
 import { Typography, IconButton, Stack } from "@mui/material";
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
@@ -137,6 +137,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
 
     return (
         <Stack direction="row" sx={{alignItems: "center", gap: 1, marginLeft: "auto"}}>
+            {monitoringStatus?.running && <Image alt="no" src="/disk.gif" height={50} width={50}/>}
             <Typography 
                 variant="body1" 
                 component={"p"}
