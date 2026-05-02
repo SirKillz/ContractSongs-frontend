@@ -135,7 +135,7 @@ export default function SessionsPage() {
                                 {
                                     getSessionsData?.length === 0 &&
                                     <TableRow>
-                                        <TableCell align="center" colSpan={3}>
+                                        <TableCell align="center" colSpan={4}>
                                             <Alert 
                                                 severity="warning" 
                                                 sx={{display: "flex", justifyContent: "center"}}

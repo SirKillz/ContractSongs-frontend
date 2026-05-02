@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getSessions, createSession, getSession } from "@/api/sessions";
+import { getSessions, createSession, getSession, deleteSession } from "@/api/sessions";
 import { CreateContractSongSessionPayload } from "@/types/sessions";
 
 type useGetSessionsOptions = {
@@ -41,5 +41,18 @@ export function useGetSession({enabled, id}: useGetSessionOptions) {
         queryFn: () => getSession(id),
         staleTime: 1000 * 60 * 5, // 5 minutes
         enabled: enabled
+    })
+}
+
+type useDeleteSessionOptions = {
+    sessionId: number
+}
+export function useDeleteSession({sessionId}: useDeleteSessionOptions) {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: () => deleteSession(sessionId),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({queryKey: ['sessions']})
+        }
     })
 }
