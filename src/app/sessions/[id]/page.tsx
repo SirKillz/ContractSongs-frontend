@@ -14,6 +14,40 @@ import AutoHeightPage from "@/components/common/AutoHeightPage";
 import { useGetSession } from "@/hooks/sessions";
 import Section from "@/components/common/Section";
 import ToggleMonitoringButton from "@/components/MonitoringButtons/ToggleMonitoringButton";
+import { ReadPlayer } from "@/types/players";
+
+function createTableRows(players: ReadPlayer[]) {
+
+    const alignment = "center";
+    let rows = [];
+
+    for (let player of players) {
+
+        let createdPlayerNameRow = false
+        for (let song of player.songs) {
+            if (!createdPlayerNameRow) {
+                rows.push(
+                    <TableRow key={song.id}>
+                        <TableCell rowSpan={player.songs.length} align={alignment}>{player.name}</TableCell>
+                        <TableCell align={alignment}>{song.name}</TableCell>
+                        <TableCell align={alignment}>{song.artist}</TableCell>
+                        <TableCell align={alignment}>{song.been_contracted ? "True" : "False"}</TableCell>
+                    </TableRow>
+                )
+                createdPlayerNameRow = true;
+            } else {
+                rows.push(
+                    <TableRow key={song.id}>
+                        <TableCell align={alignment}>{song.name}</TableCell>
+                        <TableCell align={alignment}>{song.artist}</TableCell>
+                        <TableCell align={alignment}>{song.been_contracted ? "True": "False"}</TableCell>
+                    </TableRow>
+                )
+            }
+        }
+    }
+    return rows;
+}
 
 export default function SessionDetailPage() {
 
@@ -44,30 +78,26 @@ export default function SessionDetailPage() {
             </Section>
             <Section>
                 <Button onClick={() => router.push(`/sessions/${id}/edit`)} variant="outlined">Edit Session</Button>
-                <TableContainer component={Paper}>
-                    <Table sx={{mindWidth: 650}}>
-                        <TableHead>
-                            <TableRow sx={{backgroundColor: "black"}}>
-                                <TableCell sx={{color: "white"}} align="center">Player Name</TableCell>
-                                <TableCell sx={{color: "white"}} align="center">Song Count</TableCell>
-                                <TableCell sx={{color: "white"}} align="center">Been Contracted</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {sessionData?.players.map(player => {
-                                return (
-                                    <TableRow key={player.id}>
-                                        <TableCell align="center">{player.name}</TableCell>
-                                        <TableCell align="center">{player.songs.length}</TableCell>
-                                        <TableCell align="center">
-                                            {player.songs.some(song => song.been_contracted === true) ? "Yes": "No"}
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                {
+                    sessionData &&
+                    <TableContainer component={Paper}>
+                        <Table sx={{mindWidth: 650}}>
+                            <TableHead>
+                                <TableRow sx={{backgroundColor: "black"}}>
+                                    <TableCell sx={{color: "white", width: "20%"}} align="center">Player Name</TableCell>
+                                    <TableCell sx={{color: "white", width: "35%"}} align="center">Songs</TableCell>
+                                    <TableCell sx={{color: "white", width: "35%"}} align="center">Artist</TableCell>
+                                    <TableCell sx={{color: "white", width: "10%"}} align="center">Been Contracted</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    createTableRows(sessionData.players).map(row => row)
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                }
             </Section>
         </AutoHeightPage>
     )
