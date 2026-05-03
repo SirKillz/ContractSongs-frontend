@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react";
-import { useParams } from "next/navigation"
-import { Typography, Stack } from "@mui/material";
+import { useParams, useRouter } from "next/navigation"
+import { Typography, Stack, Button } from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,10 +16,11 @@ import Section from "@/components/common/Section";
 import ToggleMonitoringButton from "@/components/MonitoringButtons/ToggleMonitoringButton";
 
 export default function SessionDetailPage() {
-    const [polling, setPolling] = useState(false);
 
     const params = useParams<{id: string}>();
     const id = params.id;
+
+    const router = useRouter();
 
     const {
         isPending: isGettingSession,
@@ -43,6 +43,7 @@ export default function SessionDetailPage() {
                 
             </Section>
             <Section>
+                <Button onClick={() => router.push(`/sessions/${id}/edit`)} variant="outlined">Edit Session</Button>
                 <TableContainer component={Paper}>
                     <Table sx={{mindWidth: 650}}>
                         <TableHead>
