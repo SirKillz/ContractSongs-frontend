@@ -1,7 +1,8 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation"
-import { Typography, Stack, Button } from "@mui/material";
+import { Typography, Stack, Button, IconButton, Tooltip } from "@mui/material";
+import LaunchIcon from '@mui/icons-material/Launch';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -69,7 +70,14 @@ export default function SessionDetailPage() {
         <AutoHeightPage>
             <Section>
                 <Stack direction="row" sx={{alignItems: "center"}}>
-                    <Typography variant="h1" component={"h1"}>Playlist: {sessionData?.playlist_name}</Typography>
+                    <Stack direction="row" sx={{alignItems: "center", gap: 1}}>
+                        <Typography variant="h1" component={"h1"}>Playlist: {sessionData?.playlist_name}</Typography>
+                        <Tooltip title="To Spotify">
+                            <IconButton onClick={() => window.open(`https://open.spotify.com/playlist/${sessionData?.playlist_id}`)}>
+                                <LaunchIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Stack>
                     <Stack direction="row" sx={{gap: 1, alignItems: "center", marginLeft: "auto"}}>
                         <ToggleMonitoringButton sessionId={Number(id)}/>
                     </Stack>
