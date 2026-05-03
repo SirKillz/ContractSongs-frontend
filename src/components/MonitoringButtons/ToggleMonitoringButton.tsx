@@ -29,6 +29,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const activePlaybackIdRef = useRef(0);
     const finishPlaybackRef = useRef<(() => void) | null>(null);
+    const [isContractSongOverlayVisible, setIsContractSongOverlayVisible] = useState(false);
     const [contractSongPlayerNames, setContractSongPlayerNames] = useState<string[]>([]);
 
     const {
@@ -88,6 +89,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
         audio.src = payload.audio_url;
 
         setContractSongPlayerNames(payload.player_names);
+        setIsContractSongOverlayVisible(true);
 
         const completion = createAudioCompletion(audio, signal);
         finishPlaybackRef.current = completion.finish;
@@ -105,6 +107,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
             }
 
             if (activePlaybackIdRef.current === playbackId) {
+                setIsContractSongOverlayVisible(false);
                 setContractSongPlayerNames([]);
             }
         }
@@ -185,6 +188,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
         abortControllerRef.current = null;
         activePlaybackIdRef.current += 1;
         finishCurrentPlayback();
+        setIsContractSongOverlayVisible(false);
         setContractSongPlayerNames([]);
 
         audioRef.current?.pause();
@@ -202,7 +206,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
     return (
         <>
             <ContractSongOverlay
-                isVisible={contractSongPlayerNames.length > 0}
+                isVisible={isContractSongOverlayVisible}
                 playerNames={contractSongPlayerNames}
             />
             <Stack direction="row" sx={{alignItems: "center", gap: 1, marginLeft: "auto"}}>
