@@ -6,7 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { FormContainer } from "react-hook-form-mui"
 
-import { useGetSession } from "@/hooks/sessions"
+import { useGetSession, useUpdateSession } from "@/hooks/sessions"
 import { useGetSpotifyPlaylistSongs } from "@/hooks/spotify"
 import { EditSessionFormValues } from "@/types/sessionForm"
 
@@ -37,6 +37,10 @@ export default function EditSessionForm({sessionId}: Props) {
         data: playlistSongData
     } = useGetSpotifyPlaylistSongs({enabled: !!sessionData, playlist_id: sessionData?.playlist_id ?? ""})
 
+    const {
+        mutate: updateSession
+    } = useUpdateSession()
+
     return (
         <Section>
             <Stack direction={"row"} sx={{alignItems: "center", gap: 1}}>
@@ -51,12 +55,9 @@ export default function EditSessionForm({sessionId}: Props) {
             {!!sessionData && 
             <FormContainer<EditSessionFormValues>
                 onSuccess={async (data: EditSessionFormValues) => {
-                    // const resolvedData = await resolveFormData(data)
-                    // if (!resolvedData.ok) {
-                    //     alert(resolvedData.error)
-                    //     return
-                    // }
-                    // createSession(resolvedData.data)
+                    
+                    const payload = {players: data.players};
+                    updateSession({sessionId, payload})
                     console.log(data);
                 }}
                 defaultValues={{

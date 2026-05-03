@@ -13,3 +13,7 @@ export type CreateContractSongSessionPayload = {
     playlist_name: string,
     players: CreatePlayer[]
 }
+
+export type UpdateSessionPayload = {
+    players: CreatePlayer[] | ReadPlayer[]
+}

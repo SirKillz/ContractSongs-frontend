@@ -2,8 +2,8 @@ import { useRouter } from "next/navigation";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getSessions, createSession, getSession, deleteSession } from "@/api/sessions";
-import { CreateContractSongSessionPayload } from "@/types/sessions";
+import { getSessions, createSession, getSession, deleteSession, updateContactSongSession } from "@/api/sessions";
+import { CreateContractSongSessionPayload, UpdateSessionPayload } from "@/types/sessions";
 
 type useGetSessionsOptions = {
     enabled?: boolean
@@ -53,6 +53,23 @@ export function useDeleteSession({sessionId}: useDeleteSessionOptions) {
         mutationFn: () => deleteSession(sessionId),
         onSuccess: async () => {
             await queryClient.invalidateQueries({queryKey: ['sessions']})
+        }
+    })
+}
+
+type UpdateSessionArgs = {
+    sessionId: number,
+    payload: UpdateSessionPayload
+}
+
+export function useUpdateSession() {
+    const queryClient = useQueryClient();
+    const router = useRouter();
+    return useMutation({
+        mutationFn: ({sessionId, payload}: UpdateSessionArgs) => updateContactSongSession(sessionId, payload),
+        onSuccess: async (_, {sessionId}) => {
+            await queryClient.invalidateQueries({queryKey: ['sessions', sessionId]})
+            router.push(`/sessions/${sessionId}`)
         }
     })
 }

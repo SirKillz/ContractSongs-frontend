@@ -1,6 +1,6 @@
 import { callAPI } from "./apiBase";
 
-import { ReadContractSongSession, CreateContractSongSessionPayload } from "@/types/sessions";
+import { ReadContractSongSession, CreateContractSongSessionPayload, UpdateSessionPayload } from "@/types/sessions";
 
 export async function getSessions(): Promise<ReadContractSongSession[]> {
     const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/sessions`;
@@ -43,6 +43,18 @@ export async function deleteSession(id: number) {
         headers: {
             "Content-Type": "application/json"
         }
+    }
+    return await callAPI(url, fetchConfig);
+}
+
+export async function updateContactSongSession(id: number, payload: UpdateSessionPayload): Promise<ReadContractSongSession> {
+    const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/sessions/${id}`
+    const fetchConfig = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
     }
     return await callAPI(url, fetchConfig);
 }
