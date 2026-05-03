@@ -1,6 +1,8 @@
 "use client"
 
-import { Typography, Button, Stack } from "@mui/material"
+import { useRouter } from "next/navigation";
+import { Typography, Button, Stack, IconButton, Tooltip } from "@mui/material"
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { FormContainer } from "react-hook-form-mui"
 
@@ -20,6 +22,8 @@ type Props = {
 
 export default function EditSessionForm({sessionId}: Props) {
 
+    const router = useRouter();
+
     const {
         isPending: isGettingSession,
         isError: isErrorGettingSession,
@@ -35,7 +39,14 @@ export default function EditSessionForm({sessionId}: Props) {
 
     return (
         <Section>
-            <Typography variant="h1" component={"h1"}>Edit Existing Session</Typography>
+            <Stack direction={"row"} sx={{alignItems: "center", gap: 1}}>
+                <Tooltip title={"Back to Session"}>
+                    <IconButton onClick={() => router.push(`/sessions/${sessionId}`)}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                </Tooltip>
+                <Typography variant="h1" component={"h1"}>Edit Existing Session</Typography>
+            </Stack>
             {isGettingPlaylistSongs && <CustomLoading loadingText="Loading Session Data..."/>}
             {!!sessionData && 
             <FormContainer<EditSessionFormValues>
