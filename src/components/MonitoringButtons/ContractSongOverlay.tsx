@@ -60,7 +60,7 @@ export default function ContractSongOverlay({isVisible, playerNames}: ContractSo
                             lineHeight: 1.15,
                         }}
                     >
-                        New Contact Song For:
+                        New Contract Song For:
                     </Typography>
                     <Typography
                         component="h2"
