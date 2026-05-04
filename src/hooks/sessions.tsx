@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getSessions, createSession, getSession, deleteSession, updateContactSongSession } from "@/api/sessions";
+import { getSessions, createSession, getSession, deleteSession, updateContactSongSession, resetPlayerContractSongStatus } from "@/api/sessions";
 import { CreateContractSongSessionPayload, UpdateSessionPayload } from "@/types/sessions";
 
 type useGetSessionsOptions = {
@@ -70,6 +70,16 @@ export function useUpdateSession() {
         onSuccess: async (_, {sessionId}) => {
             await queryClient.invalidateQueries({queryKey: ['sessions', sessionId]})
             router.push(`/sessions/${sessionId}`)
+        }
+    })
+}
+
+export function useResetPlayerContactSongStatus() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (sessionId: number) => resetPlayerContractSongStatus(sessionId),
+        onSuccess: async(_, sessionId) => {
+            await queryClient.invalidateQueries({queryKey: ['sessions', sessionId]})
         }
     })
 }

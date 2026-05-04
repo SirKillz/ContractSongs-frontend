@@ -58,3 +58,14 @@ export async function updateContactSongSession(id: number, payload: UpdateSessio
     }
     return await callAPI(url, fetchConfig);
 }
+
+export async function resetPlayerContractSongStatus(sessionId: number) {
+    const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/sessions/${sessionId}/players/reset-contract-status`
+    const fetchConfig = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+    return await callAPI(url, fetchConfig);
+}

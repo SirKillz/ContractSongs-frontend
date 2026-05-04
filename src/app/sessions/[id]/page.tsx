@@ -12,10 +12,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import AutoHeightPage from "@/components/common/AutoHeightPage";
+import PopUpModal from "@/components/common/PopUpModal";
 import { useGetSession } from "@/hooks/sessions";
 import Section from "@/components/common/Section";
 import ToggleMonitoringButton from "@/components/MonitoringButtons/ToggleMonitoringButton";
 import { ReadPlayer } from "@/types/players";
+import ResetContractStatusButton from "@/components/Sessions/ResetContractStatusButton";
 
 function createTableRows(players: ReadPlayer[]) {
 
@@ -86,6 +88,7 @@ export default function SessionDetailPage() {
             </Section>
             <Section>
                 <Button onClick={() => router.push(`/sessions/${id}/edit`)} variant="outlined">Edit Session</Button>
+                <ResetContractStatusButton sessionId={Number(id)}/>
                 {
                     sessionData &&
                     <TableContainer component={Paper}>
