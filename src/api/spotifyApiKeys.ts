@@ -40,4 +40,15 @@ async function createApiTokens(payload: CreateApiTokensPayload): Promise<GetApiK
     return await callAPI<GetApiKeysResponse>(url, fetchConfig)
 }
 
-export { getApiKeys, requestApiKeysWithCode, createApiTokens }
+async function deleteApiKeys() {
+    const url = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api-keys`
+    const fetchConfig = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
+    return await callAPI(url, fetchConfig)
+}
+
+export { getApiKeys, requestApiKeysWithCode, createApiTokens, deleteApiKeys }

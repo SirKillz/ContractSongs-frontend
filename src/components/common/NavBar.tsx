@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { Stack, Button } from "@mui/material"
+import LogoutButton from "./LogoutButton";
 
 export default function NavBar() {
 
@@ -23,12 +24,7 @@ export default function NavBar() {
             >
                 Sessions
             </Button>
-            <Button 
-                variant="contained"
-                color="error"
-            >
-                Log Out
-            </Button>
+            <LogoutButton />
         </Stack>
     )
     

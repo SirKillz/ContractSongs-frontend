@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { getApiKeys, requestApiKeysWithCode, createApiTokens } from "@/api/spotifyApiKeys";
+import { getApiKeys, requestApiKeysWithCode, createApiTokens, deleteApiKeys } from "@/api/spotifyApiKeys";
 
 import { CreateApiTokensPayload } from "@/types/apiKeys";
 
@@ -43,6 +43,18 @@ export function useCreateApiTokens() {
     onSuccess: async() => {
       await queryClient.invalidateQueries({queryKey: ['api-keys']})
       router.replace("/sessions")
+    }
+  })
+}
+
+export function useDeleteApiTokens() {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => deleteApiKeys(),
+    onSuccess: async() => {
+      await queryClient.invalidateQueries({queryKey: ['api-key']})
+      router.replace("/")
     }
   })
 }
