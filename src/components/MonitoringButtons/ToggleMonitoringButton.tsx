@@ -9,6 +9,7 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useGetSpotifyContactSongServiceStatus, useStartSpotifyMonitoringService, useStopSpotifyMonitoringService } from "@/hooks/spotify";
 import ContractSongOverlay from "./ContractSongOverlay";
+import queryClient from "@/app/queryClient";
 
 type ContractSongEvent = {
     type: string,
@@ -150,6 +151,7 @@ export default function ToggleMonitoringButton({sessionId}: Props) {
                     const payload = JSON.parse(event.data) as ContractSongEvent;
                     if (payload.type === "contract_song" && payload.audio_url) {
                         void playAudio(payload, controller.signal);
+                        queryClient.invalidateQueries({queryKey: ['sessions']})
                     }
                 },
 
